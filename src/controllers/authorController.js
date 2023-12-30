@@ -1,9 +1,9 @@
-import author from "../models/Author.js";
+import { author } from "../models/Author.js";
 
 class AuthorController {
     static async listAuthors ( req, res) {
         try{
-            const list_authors = await AuthorController.find({});
+            const list_authors = await author.find({});
             res.status(200).json(list_authors);
         } catch (error) {
             res.status(500).json({ message: `${error.message} - Request Failure`});
