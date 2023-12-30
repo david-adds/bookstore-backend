@@ -53,6 +53,16 @@ class BookController {
             res.status(500).json({ message: `${error.message} - Failed to Delete Book info`});
         }
     };
+    static async listBooksByPublisher(req, res) {
+        const publisher = req.query.publisher;
+        try {
+            const bookByPublisher = await book.find({publisher: publisher});
+            res.status(200).json(bookByPublisher);
+        } catch (error) {
+            res.status(500).json({ message: `${error.message} - Failed Search`});
+        }
+
+    }
 };
 
 export default BookController;
