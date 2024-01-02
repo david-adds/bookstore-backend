@@ -77,10 +77,12 @@ class BookController {
     try {
       const { publisher, title } = req.query;
 
-      const search = {};
+      const regex = new RegExp(publisher, "i");
 
-      if (publisher) search.publisher = publisher;
-      if (title) search.title = title;
+      const search = {};
+      
+      if (publisher) search.publisher = regex;
+      if (title) search.title = { $regex: title,  $options: "i"};
 
       const bookByPublisher = await book.find(search);
       res.status(200).json(bookByPublisher);
