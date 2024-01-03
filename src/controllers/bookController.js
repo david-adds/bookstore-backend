@@ -5,8 +5,18 @@ import NotFound from "../errors/notFoundError.js";
 class BookController {
   static async listBooks ( req, res, next) {
     try{
-      const list_books = await book.find({});
-      res.status(200).json(list_books);
+      let {threshold=5, page_=1} = req.query;
+
+      threshold = parseInt(threshold);
+      page_ = parseInt(page_);
+
+      if (threshold > 0 && page_ >0 ){
+        const list_books = await book.find({})
+        .skip((page_-1)*threshold).
+        limit(threshold);
+  
+        res.status(200).json(list_books);
+      }
     } catch (error) {
       next(error);
     }
