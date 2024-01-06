@@ -4,19 +4,12 @@ import NotFound from "../errors/notFoundError.js";
 
 class BookController {
   static async listBooks ( req, res, next) {
-    try{
-      let {threshold=5, page_=1} = req.query;
+    try {
+      const searchBooks = book.find();
 
-      threshold = parseInt(threshold);
-      page_ = parseInt(page_);
+      req.result = searchBooks;
 
-      if (threshold > 0 && page_ >0 ){
-        const list_books = await book.find({})
-        .skip((page_-1)*threshold).
-        limit(threshold);
-  
-        res.status(200).json(list_books);
-      }
+      next();
     } catch (error) {
       next(error);
     }
@@ -88,8 +81,10 @@ class BookController {
       const search = processSearch(req.query);
 
       const searchResult = await book.find(search);
-      res.status(200).json(searchResult);
+      
+      res.result = searchResult;
 
+      next();
     } catch (error) {
       next(error);
     }
